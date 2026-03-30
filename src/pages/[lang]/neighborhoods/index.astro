@@ -17,7 +17,7 @@ const neighborhoods = filterByLang(await getCollection("neighborhoods"), lang)
   .sort((a, b) => a.data.order - b.data.order);
 ---
 
-<Layout title={t("nav.neighborhoods")}>
+<Layout title={t("seo.neighborhoods.title")} description={t("seo.neighborhoods.desc")} keywords={lang === "th" ? ["ย่านโคราช", "เที่ยวโคราชในเมือง", "เขาใหญ่", "พิมาย"] : lang === "zh" ? ["呵叻街区", "呵叻老城"] : ["korat neighborhoods", "korat city center", "korat old town", "pak chong korat"]}>
   <HeroSplit
     title={t("nav.neighborhoods")}
     subtitle={t("home.explore.subtitle")}

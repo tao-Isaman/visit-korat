@@ -20,7 +20,7 @@ const food = filterByLang(await getCollection("food"), lang)
 const categories = [...new Set(food.map((f) => f.data.category))];
 ---
 
-<Layout title={t("nav.food")}>
+<Layout title={t("seo.food.title")} description={t("seo.food.desc")} keywords={lang === "th" ? ["อาหารโคราช", "ผัดหมี่โคราช", "ส้มตำโคราช", "ร้านอาหารโคราช", "ตลาดกลางคืนโคราช"] : lang === "zh" ? ["呵叻美食", "呵叻炒米粉", "呵叻夜市"] : ["korat food", "pad mee korat", "som tam korat", "korat street food", "korat night market food", "isaan food korat"]}>
   <HeroSplit
     title={t("nav.food")}
     subtitle={t("home.food.subtitle")}

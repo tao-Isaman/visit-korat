@@ -110,6 +110,24 @@ export const ui = {
     "footer.aboutText":
       "Nakhon Ratchasima (โคราช) is Thailand's largest province and the gateway to the Isan region.",
     "footer.copyright": "Visit Korat. Made with love for travelers.",
+
+    // SEO Meta
+    "seo.home.title": "Visit Korat — Gateway to Isaan Thailand | Travel Guide 2026",
+    "seo.home.desc": "Discover Korat (Nakhon Ratchasima), Thailand's gateway to Isaan. Explore Phimai Historical Park, Khao Yai National Park, authentic Pad Mee Korat, vibrant festivals. Plan your trip now.",
+    "seo.attractions.title": "Things to Do in Korat | Phimai, Khao Yai & Hidden Gems",
+    "seo.attractions.desc": "Explore top attractions in Korat: Phimai Historical Park, Khao Yai National Park, Thao Suranari Monument, Dan Kwian Pottery Village. Complete guide to Nakhon Ratchasima sightseeing.",
+    "seo.food.title": "Korat Food Guide | Pad Mee Korat, Som Tam & Best Isaan Eats",
+    "seo.food.desc": "Taste the best Korat food: legendary Pad Mee Korat noodles, fiery Som Tam, grilled chicken, night market street food. Ultimate guide to eating in Nakhon Ratchasima.",
+    "seo.neighborhoods.title": "Explore Korat Neighborhoods | City Center, Khao Yai & Phimai",
+    "seo.neighborhoods.desc": "Discover Korat's best areas: historic old town, Khao Yai mountain retreats, ancient Phimai district. Where to go in Nakhon Ratchasima province.",
+    "seo.festivals.title": "Korat Festivals & Events | Phimai Festival, Ya Mo Celebration",
+    "seo.festivals.desc": "Experience Korat's vibrant festivals: Thao Suranari (Ya Mo) Festival, Phimai Festival with boat races, Songkran water fights, Loy Krathong. Annual events calendar.",
+    "seo.plan.title": "Plan Your Trip to Korat | Bangkok to Korat, Budget & Tips",
+    "seo.plan.desc": "Plan your Korat trip: how to get from Bangkok by bus, train, or car. Best time to visit, budget guide, accommodation tips, and essential travel information.",
+    "seo.getting-around.title": "Getting Around Korat | Transport Guide & Bangkok to Korat",
+    "seo.getting-around.desc": "How to get to Korat from Bangkok and get around the city. Bus, train, car, Grab, songthaew guide. Transport tips for Nakhon Ratchasima travelers.",
+    "seo.blog.title": "Korat Travel Blog | Tips, Itineraries & Insider Guides",
+    "seo.blog.desc": "Travel tips, itineraries, and insider guides for visiting Korat. First-time visitor guides, weekend trip plans, and hidden gems in Nakhon Ratchasima.",
   },
 
   th: {
@@ -213,6 +231,24 @@ export const ui = {
       "นครราชสีมา (โคราช) เป็นจังหวัดที่ใหญ่ที่สุดของไทยและเป็นประตูสู่ภาคอีสาน",
     "footer.copyright":
       "Visit Korat สร้างด้วยความรักเพื่อนักท่องเที่ยว",
+
+    // SEO Meta
+    "seo.home.title": "เที่ยวโคราช — ประตูสู่อีสาน | คู่มือท่องเที่ยวนครราชสีมา 2569",
+    "seo.home.desc": "รวมที่เที่ยวโคราช ที่กิน ที่พัก คาเฟ่ เทศกาล อุทยานประวัติศาสตร์พิมาย เขาใหญ่ ผัดหมี่โคราช ส้มตำโคราช วางแผนเที่ยวนครราชสีมาครบจบในที่เดียว",
+    "seo.attractions.title": "ที่เที่ยวโคราช 2569 | พิมาย เขาใหญ่ ย่าโม และจุดเช็กอินที่ห้ามพลาด",
+    "seo.attractions.desc": "รวมที่เที่ยวโคราชครบ ทั้งในเมืองและนอกเมือง อุทยานประวัติศาสตร์พิมาย อุทยานแห่งชาติเขาใหญ่ อนุสาวรีย์ย่าโม ด่านเกวียน ที่เที่ยวนครราชสีมาอัปเดตล่าสุด",
+    "seo.food.title": "ร้านอาหารโคราช | ผัดหมี่โคราช ส้มตำโคราช สายกินต้องไม่พลาด",
+    "seo.food.desc": "รวมร้านอาหารโคราชสุดอร่อย ร้านผัดหมี่โคราชเจ้าเด็ด ร้านส้มตำแซ่บ ตลาดกลางคืน ร้านคาเฟ่โคราช อาหารอีสานแท้ ครบทุกรสที่นครราชสีมา",
+    "seo.neighborhoods.title": "ย่านน่าเที่ยวโคราช | ใจกลางเมือง เขาใหญ่ และพิมาย",
+    "seo.neighborhoods.desc": "สำรวจย่านน่าเที่ยวของโคราช เมืองเก่า ย่านเขาใหญ่ เที่ยวพิมาย แหล่งท่องเที่ยวในนครราชสีมา",
+    "seo.festivals.title": "เทศกาลโคราช | งานฉลองย่าโม เทศกาลพิมาย สงกรานต์โคราช",
+    "seo.festivals.desc": "ปฏิทินเทศกาลและงานประจำปีของโคราช เทศกาลเที่ยวพิมาย งานฉลองท้าวสุรนารี สงกรานต์ ลอยกระทง กิจกรรมที่นครราชสีมาตลอดทั้งปี",
+    "seo.plan.title": "วางแผนเที่ยวโคราช | การเดินทาง ที่พัก งบประมาณ เคล็ดลับ",
+    "seo.plan.desc": "คู่มือวางแผนเที่ยวโคราชฉบับสมบูรณ์ การเดินทางจากกรุงเทพฯ ที่พักราคาดี แผนเที่ยวโคราช 1 วัน 2 วัน 3 วัน เที่ยวโคราชง่ายๆ ใกล้กรุงเทพ",
+    "seo.getting-around.title": "การเดินทางในโคราช | รถบัส รถไฟ กรุงเทพ-โคราช",
+    "seo.getting-around.desc": "วิธีเดินทางไปโคราชจากกรุงเทพ และเดินทางในเมือง รถบัส รถไฟ รถเช่า Grab สงเทอว์ คู่มือการเดินทางนครราชสีมาฉบับสมบูรณ์",
+    "seo.blog.title": "บล็อกเที่ยวโคราช | เคล็ดลับ แพลนเที่ยว ไกด์ท่องเที่ยว",
+    "seo.blog.desc": "เคล็ดลับท่องเที่ยว แพลนเที่ยว และไกด์สำหรับเที่ยวโคราช คู่มือสำหรับผู้มาเยือนครั้งแรก แผนเที่ยววันหยุด และที่เที่ยวลับนครราชสีมา",
   },
 
   zh: {
@@ -308,5 +344,23 @@ export const ui = {
     "footer.aboutText":
       "呵叻府是泰国最大的府，也是通往伊森地区的门户。",
     "footer.copyright": "Visit Korat 为旅行者用心打造。",
+
+    // SEO Meta
+    "seo.home.title": "呵叻旅游攻略 — 泰国东北部伊森大门 | 2026旅游指南",
+    "seo.home.desc": "探索泰国呵叻府，伊森地区的大门。游览披迈历史公园、考艾国家公园，品尝正宗呵叻美食。最全呵叻自由行攻略，景点、美食、住宿一网打尽。",
+    "seo.attractions.title": "呵叻必去景点 | 披迈历史公园、考艾国家公园、隐藏宝藏",
+    "seo.attractions.desc": "呵叻府景点推荐：披迈石宫、考艾世界遗产、巾帼英雄纪念碑、丹宽陶器村。泰国呵叻所有必去景点完整指南。",
+    "seo.food.title": "呵叻美食攻略 | 炒米粉、青木瓜沙拉和伊森美食推荐",
+    "seo.food.desc": "呵叻必吃美食：正宗Pad Mee Korat炒米粉、Som Tam木瓜沙拉、烤鸡糯米饭、夜市小吃。泰国东北部最地道的美食体验。",
+    "seo.neighborhoods.title": "呵叻街区探索 | 市中心、考艾和披迈",
+    "seo.neighborhoods.desc": "探索呵叻最佳街区：历史老城区、考艾山区度假胜地、古老的披迈地区。呵叻府各区旅游指南。",
+    "seo.festivals.title": "呵叻节日活动 | 披迈节、素拉纳里纪念节等年度盛事",
+    "seo.festivals.desc": "呵叻全年节日活动指南：素拉纳里纪念节、披迈节龙舟赛、宋干泼水节、水灯节。泰国呵叻府最精彩的文化节庆活动。",
+    "seo.plan.title": "呵叻旅行规划 | 曼谷到呵叻交通、预算与攻略",
+    "seo.plan.desc": "呵叻旅行规划完整指南：从曼谷坐大巴、火车或自驾到呵叻。最佳旅行时间、预算指南、住宿建议和实用旅行信息。",
+    "seo.getting-around.title": "呵叻交通指南 | 曼谷到呵叻及市内交通",
+    "seo.getting-around.desc": "从曼谷到呵叻的完整交通指南：大巴、火车、自驾、Grab、双条车。呵叻府旅行者实用交通攻略。",
+    "seo.blog.title": "呵叻旅游博客 | 攻略、行程推荐和深度指南",
+    "seo.blog.desc": "呵叻旅行攻略、行程推荐和深度指南。首次访问指南、周末行程计划和呵叻府隐藏宝藏。",
   },
 } as const;

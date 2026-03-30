@@ -13,7 +13,7 @@ const lang = Astro.params.lang as Lang;
 const t = useTranslations(lang);
 ---
 
-<Layout title={t("nav.plan")}>
+<Layout title={t("seo.plan.title")} description={t("seo.plan.desc")} keywords={lang === "th" ? ["วางแผนเที่ยวโคราช", "ที่พักโคราช", "กรุงเทพ-โคราช"] : lang === "zh" ? ["呵叻旅行规划", "曼谷到呵叻", "呵叻住宿"] : ["plan trip korat", "bangkok to korat", "korat hotels", "best time to visit korat", "korat budget"]}>
   <HeroSplit
     title={t("plan.hero.title")}
     titleAccent={t("plan.hero.title2")}

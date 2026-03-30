@@ -20,7 +20,7 @@ const attractions = filterByLang(await getCollection("attractions"), lang)
 const categories = [...new Set(attractions.map((a) => a.data.category))];
 ---
 
-<Layout title={t("nav.attractions")}>
+<Layout title={t("seo.attractions.title")} description={t("seo.attractions.desc")} keywords={lang === "th" ? ["ที่เที่ยวโคราช", "พิมาย", "เขาใหญ่", "ย่าโม", "ด่านเกวียน"] : lang === "zh" ? ["呵叻景点", "披迈历史公园", "考艾国家公园"] : ["korat attractions", "phimai historical park", "khao yai national park", "things to do in korat", "nakhon ratchasima attractions"]}>
   <HeroSplit
     title={t("nav.attractions")}
     titleAccent=""

@@ -17,7 +17,7 @@ const posts = filterByLang(await getCollection("blog"), lang)
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
-<Layout title={t("nav.blog")}>
+<Layout title={t("seo.blog.title")} description={t("seo.blog.desc")} keywords={lang === "th" ? ["บล็อกเที่ยวโคราช", "แพลนเที่ยวโคราช", "เที่ยวโคราช 2 วัน"] : lang === "zh" ? ["呵叻旅游博客", "呵叻行程推荐"] : ["korat travel blog", "korat itinerary", "korat travel tips", "korat hidden gems"]}>
   <HeroSplit
     title={t("nav.blog")}
     subtitle={t("home.blog.subtitle")}

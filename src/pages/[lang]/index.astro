@@ -38,7 +38,12 @@ const latestBlog = filterByLang(await getCollection("blog"), lang)
   .slice(0, 2);
 ---
 
-<Layout title={t("home.hero.title")}>
+<Layout
+  title={t("seo.home.title")}
+  description={t("seo.home.desc")}
+  keywords={lang === "th" ? ["เที่ยวโคราช", "ที่เที่ยวโคราช", "นครราชสีมา", "ผัดหมี่โคราช", "เขาใหญ่", "พิมาย"] : lang === "zh" ? ["呵叻旅游", "呵叻府攻略", "泰国呵叻", "呵叻景点", "考艾国家公园", "披迈历史公园"] : ["visit korat", "korat travel guide", "nakhon ratchasima", "things to do in korat", "gateway to isaan", "phimai historical park", "khao yai national park", "pad mee korat"]}
+  structuredData={{ type: "website" }}
+>
   <!-- Hero -->
   <Hero
     title={t("home.hero.title")}

@@ -1,0 +1,73 @@
+---
+import { getLangFromUrl, switchLang } from "../i18n/utils";
+import { languages, type Lang } from "../i18n/ui";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: "website" | "article";
+  publishDate?: Date;
+  keywords?: string[];
+  noindex?: boolean;
+}
+
+const lang = getLangFromUrl(Astro.url);
+const {
+  title,
+  description,
+  image = "/images/heroes/korat-skyline.jpg",
+  type = "website",
+  publishDate,
+  keywords = [],
+  noindex = false,
+} = Astro.props;
+
+const siteUrl = Astro.site?.origin || "https://visitkorat.com";
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+const imageUrl = image.startsWith("http") ? image : new URL(image, siteUrl).href;
+
+// Build hreflang links
+const hreflangs = (Object.keys(languages) as Lang[]).map((l) => ({
+  lang: l === "zh" ? "zh-Hans" : l,
+  href: new URL(switchLang(Astro.url, l), siteUrl).href,
+}));
+
+// Default keywords per language
+const defaultKeywords: Record<string, string[]> = {
+  en: ["visit korat", "korat thailand", "nakhon ratchasima", "korat travel guide", "things to do in korat", "gateway to isaan"],
+  th: ["เที่ยวโคราช", "ที่เที่ยวโคราช", "นครราชสีมา", "ที่เที่ยวนครราชสีมา", "โคราช"],
+  zh: ["呵叻旅游", "呵叻府攻略", "泰国呵叻", "呵叻景点", "呵叻自由行"],
+};
+
+const allKeywords = [...(defaultKeywords[lang] || []), ...keywords].join(", ");
+---
+
+<!-- Canonical & hreflang -->
+<link rel="canonical" href={canonicalUrl} />
+{hreflangs.map(({ lang: l, href }) => (
+  <link rel="alternate" hreflang={l} href={href} />
+))}
+<link rel="alternate" hreflang="x-default" href={new URL(switchLang(Astro.url, "en"), siteUrl).href} />
+
+<!-- Basic Meta -->
+<meta name="keywords" content={allKeywords} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- Open Graph -->
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content="Visit Korat" />
+<meta property="og:locale" content={lang === "th" ? "th_TH" : lang === "zh" ? "zh_CN" : "en_US"} />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+
+<!-- Article-specific -->
+{publishDate && <meta property="article:published_time" content={publishDate.toISOString()} />}

@@ -31,7 +31,7 @@ for (const f of festivals) {
 }
 ---
 
-<Layout title={t("nav.festivals")}>
+<Layout title={t("seo.festivals.title")} description={t("seo.festivals.desc")} keywords={lang === "th" ? ["เทศกาลโคราช", "งานย่าโม", "เทศกาลพิมาย", "สงกรานต์โคราช", "ลอยกระทงโคราช"] : lang === "zh" ? ["呵叻节日", "披迈节", "泼水节呵叻"] : ["korat festival", "phimai festival", "ya mo festival korat", "songkran korat", "loy krathong korat"]}>
   <HeroSplit
     title={t("festivals.hero.title").split(" ")[0]}
     titleAccent={t("festivals.hero.title").split(" ").slice(1).join(" ")}

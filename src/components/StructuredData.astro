@@ -1,0 +1,123 @@
+---
+import { getLangFromUrl } from "../i18n/utils";
+
+interface Props {
+  type: "website" | "attraction" | "restaurant" | "article" | "event";
+  data?: Record<string, any>;
+}
+
+const lang = getLangFromUrl(Astro.url);
+const { type, data = {} } = Astro.props;
+const siteUrl = Astro.site?.origin || "https://visitkorat.com";
+
+function buildSchema() {
+  const base = {
+    "@context": "https://schema.org",
+  };
+
+  switch (type) {
+    case "website":
+      return {
+        ...base,
+        "@type": "WebSite",
+        name: "Visit Korat",
+        alternateName: ["เที่ยวโคราช", "呵叻旅游", "Nakhon Ratchasima Travel Guide"],
+        url: siteUrl,
+        description: "Your complete travel guide to Korat (Nakhon Ratchasima), Thailand's Gateway to Isaan.",
+        inLanguage: [
+          { "@type": "Language", name: "English", alternateName: "en" },
+          { "@type": "Language", name: "Thai", alternateName: "th" },
+          { "@type": "Language", name: "Chinese", alternateName: "zh" },
+        ],
+        publisher: {
+          "@type": "Organization",
+          name: "Visit Korat",
+          url: siteUrl,
+        },
+      };
+
+    case "attraction":
+      return {
+        ...base,
+        "@type": "TouristAttraction",
+        name: data.title,
+        description: data.description,
+        image: data.image?.startsWith("http") ? data.image : `${siteUrl}${data.image}`,
+        address: data.address ? {
+          "@type": "PostalAddress",
+          addressLocality: "Nakhon Ratchasima",
+          addressRegion: "Nakhon Ratchasima Province",
+          addressCountry: "TH",
+          streetAddress: data.address,
+        } : undefined,
+        openingHours: data.openingHours,
+        isAccessibleForFree: data.admission === "Free" || data.admission === "Free entry",
+        touristType: data.tags,
+        containedInPlace: {
+          "@type": "AdministrativeArea",
+          name: "Nakhon Ratchasima Province",
+        },
+      };
+
+    case "restaurant":
+      return {
+        ...base,
+        "@type": "Restaurant",
+        name: data.title,
+        description: data.description,
+        image: data.image?.startsWith("http") ? data.image : `${siteUrl}${data.image}`,
+        address: data.address ? {
+          "@type": "PostalAddress",
+          addressLocality: "Nakhon Ratchasima",
+          addressCountry: "TH",
+          streetAddress: data.address,
+        } : undefined,
+        priceRange: data.priceRange,
+        servesCuisine: ["Thai", "Isaan"],
+      };
+
+    case "article":
+      return {
+        ...base,
+        "@type": "Article",
+        headline: data.title,
+        description: data.description,
+        image: data.image?.startsWith("http") ? data.image : `${siteUrl}${data.image}`,
+        datePublished: data.date?.toISOString(),
+        author: {
+          "@type": "Organization",
+          name: "Visit Korat",
+        },
+        publisher: {
+          "@type": "Organization",
+          name: "Visit Korat",
+          url: siteUrl,
+        },
+      };
+
+    case "event":
+      return {
+        ...base,
+        "@type": "Event",
+        name: data.title,
+        description: data.description,
+        image: data.image?.startsWith("http") ? data.image : `${siteUrl}${data.image}`,
+        location: {
+          "@type": "Place",
+          name: data.location,
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Nakhon Ratchasima",
+            addressCountry: "TH",
+          },
+        },
+        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      };
+
+    default:
+      return base;
+  }
+}
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(buildSchema())} />
