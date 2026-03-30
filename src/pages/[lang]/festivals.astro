@@ -1,0 +1,67 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import HeroSplit from "../../components/HeroSplit.astro";
+import FestivalCard from "../../components/FestivalCard.astro";
+import { getCollection } from "astro:content";
+import { supportedLangs, useTranslations, getLocalizedPath } from "../../i18n/utils";
+import { filterByLang, getSlug } from "../../i18n/content";
+import type { Lang } from "../../i18n/ui";
+
+export function getStaticPaths() {
+  return supportedLangs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+
+const festivals = filterByLang(await getCollection("festivals"), lang)
+  .sort((a, b) => a.data.month - b.data.month || a.data.order - b.data.order);
+
+const monthNames: Record<string, string[]> = {
+  en: ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+  th: ["", "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
+  zh: ["", "一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+};
+
+const grouped = new Map<number, typeof festivals>();
+for (const f of festivals) {
+  const month = f.data.month;
+  if (!grouped.has(month)) grouped.set(month, []);
+  grouped.get(month)!.push(f);
+}
+---
+
+<Layout title={t("nav.festivals")}>
+  <HeroSplit
+    title={t("festivals.hero.title").split(" ")[0]}
+    titleAccent={t("festivals.hero.title").split(" ").slice(1).join(" ")}
+    subtitle={t("festivals.hero.subtitle")}
+    image="/images/festivals/loy-krathong.jpg"
+  />
+
+  <section class="py-16">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="space-y-16">
+        {[...grouped.entries()].map(([month, fests]) => (
+          <div class="flex flex-col md:flex-row gap-8">
+            <div class="md:w-1/4 shrink-0">
+              <h2 class="text-2xl font-extrabold text-gray-900">{monthNames[lang]?.[month] || monthNames.en[month]}</h2>
+            </div>
+            <div class="md:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {fests.map((fest) => (
+                <FestivalCard
+                  title={fest.data.title}
+                  description={fest.data.description}
+                  image={fest.data.image}
+                  dateRange={fest.data.dateRange}
+                  location={fest.data.location}
+                  href={getLocalizedPath(lang, "/festivals")}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

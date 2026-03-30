@@ -1,0 +1,274 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Hero from "../../components/Hero.astro";
+import HeroSplit from "../../components/HeroSplit.astro";
+import CategoryCard from "../../components/CategoryCard.astro";
+import PlaceCard from "../../components/PlaceCard.astro";
+import FestivalCard from "../../components/FestivalCard.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import { getCollection } from "astro:content";
+import { supportedLangs, useTranslations, getLocalizedPath } from "../../i18n/utils";
+import { filterByLang, getSlug } from "../../i18n/content";
+import type { Lang } from "../../i18n/ui";
+
+export function getStaticPaths() {
+  return supportedLangs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+
+const featuredAttractions = filterByLang(await getCollection("attractions"), lang)
+  .filter((a) => a.data.featured)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 4);
+
+const featuredFood = filterByLang(await getCollection("food"), lang)
+  .filter((f) => f.data.featured)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+
+const featuredFestivals = filterByLang(await getCollection("festivals"), lang)
+  .filter((f) => f.data.featured)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+
+const latestBlog = filterByLang(await getCollection("blog"), lang)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 2);
+---
+
+<Layout title={t("home.hero.title")}>
+  <!-- Hero -->
+  <Hero
+    title={t("home.hero.title")}
+    subtitle={t("home.hero.subtitle")}
+    image="/images/attractions/thao-suranari.jpg"
+    height="full"
+  >
+    <div class="mt-8 flex flex-wrap gap-4 justify-center">
+      <a
+        href={getLocalizedPath(lang, "/attractions")}
+        class="px-7 py-3 bg-white text-primary-700 font-semibold rounded-lg hover:bg-primary-50 transition-colors shadow-lg text-base"
+      >
+        {t("home.hero.cta")}
+      </a>
+      <a
+        href={getLocalizedPath(lang, "/plan-your-visit")}
+        class="px-7 py-3 bg-white/20 text-white font-semibold rounded-lg hover:bg-white/30 transition-colors backdrop-blur-sm border border-white/30 text-base"
+      >
+        {t("home.hero.plan")}
+      </a>
+    </div>
+  </Hero>
+
+  <!-- Categories -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeading title={t("home.explore.title")} subtitle={t("home.explore.subtitle")} />
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <CategoryCard title={t("nav.attractions")} icon="temple_buddhist" href={getLocalizedPath(lang, "/attractions")} description={t("cat.temples")} />
+        <CategoryCard title={t("nav.food")} icon="restaurant" href={getLocalizedPath(lang, "/food")} description={t("cat.food")} />
+        <CategoryCard title={t("nav.neighborhoods")} icon="location_city" href={getLocalizedPath(lang, "/neighborhoods")} description={t("cat.neighborhoods")} />
+        <CategoryCard title={t("nav.festivals")} icon="celebration" href={getLocalizedPath(lang, "/festivals")} description={t("cat.plan")} />
+        <CategoryCard title={t("nav.plan")} icon="map" href={getLocalizedPath(lang, "/plan-your-visit")} description={t("cat.plan")} />
+        <CategoryCard title={t("nav.blog")} icon="article" href={getLocalizedPath(lang, "/blog")} description={t("cat.blog")} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Festival Calendar Split Section -->
+  {featuredFestivals.length > 0 && (
+    <section>
+      <div class="flex flex-col md:flex-row">
+        <div class="md:w-[47%] relative min-h-[300px]">
+          <img
+            src={featuredFestivals[0].data.image}
+            alt="Festival"
+            class="w-full h-full object-cover absolute inset-0"
+          />
+        </div>
+        <div class="md:w-[53%] bg-dark flex items-center">
+          <div class="px-8 md:px-16 lg:px-20 py-12">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+              {t("festivals.hero.title").split(" ")[0]}
+              <span class="text-primary-400"> {t("festivals.hero.title").split(" ").slice(1).join(" ")}</span>
+            </h2>
+            <p class="mt-4 text-gray-300 max-w-lg">{t("festivals.hero.subtitle")}</p>
+          </div>
+        </div>
+      </div>
+      <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          <div class="md:col-span-4">
+            <p class="text-gray-600">{t("festivals.hero.subtitle")}</p>
+          </div>
+          <div class="md:col-span-8">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {featuredFestivals.map((fest) => (
+                <FestivalCard
+                  title={fest.data.title}
+                  titleThai={fest.data.titleThai}
+                  titleZh={fest.data.titleZh}
+                  description={fest.data.description}
+                  descriptionTh={fest.data.descriptionTh}
+                  descriptionZh={fest.data.descriptionZh}
+                  image={fest.data.image}
+                  dateRange={fest.data.dateRange}
+                  dateRangeTh={fest.data.dateRangeTh}
+                  dateRangeZh={fest.data.dateRangeZh}
+                  location={fest.data.location}
+                  href={getLocalizedPath(lang, `/festivals`)}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-10">
+          <a
+            href={getLocalizedPath(lang, "/festivals")}
+            class="inline-block px-8 py-3 bg-dark text-white font-semibold rounded-lg hover:bg-dark-soft transition-colors"
+          >
+            {t("general.viewAll")}
+          </a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Featured Attractions -->
+  <section class="py-16">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeading title={t("home.attractions.title")} subtitle={t("home.attractions.subtitle")} />
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {featuredAttractions.map((attraction) => (
+          <PlaceCard
+            title={attraction.data.title}
+            description={attraction.data.description}
+            image={attraction.data.image}
+            href={getLocalizedPath(lang, `/attractions/${getSlug(attraction.id)}`)}
+            category={attraction.data.category}
+          />
+        ))}
+      </div>
+      <div class="text-center mt-8">
+        <a
+          href={getLocalizedPath(lang, "/attractions")}
+          class="inline-flex items-center gap-2 text-primary-600 font-semibold hover:text-primary-700 transition-colors"
+        >
+          {t("general.viewAll")}
+          <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Food Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-0 bg-white rounded-[22px] overflow-hidden shadow-sm border border-gray-100">
+        <div class="md:col-span-4 relative min-h-[250px]">
+          <img
+            src="/images/food/pad-mee.jpg"
+            alt="Korat Food"
+            class="w-full h-full object-cover absolute inset-0"
+          />
+        </div>
+        <div class="md:col-span-8 p-8 md:p-12 flex flex-col justify-center">
+          <h2 class="text-3xl font-extrabold text-gray-900">{t("home.food.title")}</h2>
+          <p class="mt-3 text-gray-600 max-w-lg">{t("home.food.subtitle")}</p>
+          <a
+            href={getLocalizedPath(lang, "/food")}
+            class="mt-6 inline-block w-fit px-6 py-2.5 bg-dark text-white font-semibold rounded-lg hover:bg-dark-soft transition-colors text-sm"
+          >
+            {t("general.viewAll")}
+          </a>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+        {featuredFood.map((item) => (
+          <PlaceCard
+            title={item.data.title}
+            description={item.data.description}
+            image={item.data.image}
+            href={getLocalizedPath(lang, `/food/${getSlug(item.id)}`)}
+            category={item.data.category}
+            badge={item.data.priceRange}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Korat -->
+  <section class="py-20">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+      <SectionHeading title={t("home.why.title")} subtitle={t("home.why.subtitle")} />
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div class="text-center px-4">
+          <div class="w-16 h-16 rounded-full bg-primary-50 flex items-center justify-center mx-auto mb-5">
+            <span class="material-symbols-outlined text-primary-600 text-[32px]">account_balance</span>
+          </div>
+          <h3 class="text-xl font-bold mb-3">{t("home.why.heritage.title")}</h3>
+          <p class="text-gray-600">{t("home.why.heritage.desc")}</p>
+        </div>
+        <div class="text-center px-4">
+          <div class="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-5">
+            <span class="material-symbols-outlined text-green-600 text-[32px]">park</span>
+          </div>
+          <h3 class="text-xl font-bold mb-3">{t("home.why.nature.title")}</h3>
+          <p class="text-gray-600">{t("home.why.nature.desc")}</p>
+        </div>
+        <div class="text-center px-4">
+          <div class="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center mx-auto mb-5">
+            <span class="material-symbols-outlined text-amber-600 text-[32px]">restaurant</span>
+          </div>
+          <h3 class="text-xl font-bold mb-3">{t("home.why.food.title")}</h3>
+          <p class="text-gray-600">{t("home.why.food.desc")}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog -->
+  {latestBlog.length > 0 && (
+    <section class="py-16 bg-gray-50">
+      <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionHeading title={t("home.blog.title")} subtitle={t("home.blog.subtitle")} />
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {latestBlog.map((post) => (
+            <a href={getLocalizedPath(lang, `/blog/${getSlug(post.id)}`)} class="group flex flex-col sm:flex-row gap-0 bg-white rounded-[22px] overflow-hidden shadow-sm hover:shadow-lg transition-all border border-gray-100">
+              <div class="sm:w-48 shrink-0 aspect-video sm:aspect-square overflow-hidden">
+                <img
+                  src={post.data.image}
+                  alt={post.data.title}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+              </div>
+              <div class="p-5 flex flex-col justify-center">
+                <span class="text-sm text-gray-500">{post.data.date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</span>
+                <h3 class="font-bold text-lg text-gray-900 group-hover:text-primary-600 transition-colors mt-1">{post.data.title}</h3>
+                <p class="text-sm text-gray-600 mt-1 line-clamp-2">{post.data.description}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CTA -->
+  <section class="py-20 bg-primary-700 text-white text-center">
+    <div class="max-w-3xl mx-auto px-4">
+      <h2 class="text-3xl sm:text-4xl font-extrabold mb-4">{t("home.cta.title")}</h2>
+      <p class="text-lg text-primary-100 mb-8">{t("home.cta.desc")}</p>
+      <a
+        href={getLocalizedPath(lang, "/plan-your-visit")}
+        class="inline-block px-8 py-3 bg-white text-primary-700 font-semibold rounded-lg hover:bg-primary-50 transition-colors shadow-lg"
+      >
+        {t("home.cta.btn")}
+      </a>
+    </div>
+  </section>
+</Layout>

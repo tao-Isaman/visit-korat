@@ -1,0 +1,70 @@
+---
+import { getLangFromUrl, useTranslations, getLocalizedPath } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-dark text-gray-300">
+  <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10 relative">
+    <!-- Scroll to top (in-footer variant) -->
+    <div class="absolute right-8 -top-6 hidden md:block">
+      <button
+        onclick="window.scrollTo({top:0,behavior:'smooth'})"
+        class="w-14 h-14 rounded-full bg-white shadow-lg flex flex-col items-center justify-center text-primary-700 hover:bg-primary-50 transition-colors"
+      >
+        <span class="material-symbols-outlined text-[20px]">arrow_upward</span>
+        <span class="text-[10px] font-bold">TOP</span>
+      </button>
+    </div>
+
+    <!-- Logo -->
+    <a href={getLocalizedPath(lang, "/")} class="flex items-center gap-2.5 mb-8">
+      <span class="material-symbols-outlined text-white text-[28px]">temple_buddhist</span>
+      <div>
+        <span class="text-xl font-extrabold text-white">Visit</span>
+        <span class="text-xl font-extrabold text-accent-400">Korat</span>
+      </div>
+    </a>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+      <!-- About -->
+      <div class="md:col-span-5">
+        <p class="text-white font-semibold mb-1">Nakhon Ratchasima Tourism</p>
+        <p class="text-sm text-gray-400 max-w-sm">{t("footer.desc")}</p>
+      </div>
+
+      <!-- Explore links -->
+      <div class="md:col-span-2 md:col-start-7">
+        <h3 class="text-white font-semibold mb-3 text-sm">{t("footer.explore")}</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href={getLocalizedPath(lang, "/attractions")} class="hover:text-white transition-colors">{t("nav.attractions")}</a></li>
+          <li><a href={getLocalizedPath(lang, "/food")} class="hover:text-white transition-colors">{t("nav.food")}</a></li>
+          <li><a href={getLocalizedPath(lang, "/neighborhoods")} class="hover:text-white transition-colors">{t("nav.neighborhoods")}</a></li>
+          <li><a href={getLocalizedPath(lang, "/festivals")} class="hover:text-white transition-colors">{t("nav.festivals")}</a></li>
+        </ul>
+      </div>
+
+      <!-- Plan links -->
+      <div class="md:col-span-2">
+        <h3 class="text-white font-semibold mb-3 text-sm">{t("footer.plan")}</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href={getLocalizedPath(lang, "/plan-your-visit")} class="hover:text-white transition-colors">{t("nav.plan")}</a></li>
+          <li><a href={getLocalizedPath(lang, "/getting-around")} class="hover:text-white transition-colors">{t("nav.getting-around")}</a></li>
+          <li><a href={getLocalizedPath(lang, "/blog")} class="hover:text-white transition-colors">{t("nav.blog")}</a></li>
+        </ul>
+      </div>
+
+      <!-- About Korat -->
+      <div class="md:col-span-3">
+        <h3 class="text-white font-semibold mb-3 text-sm">{t("footer.about")}</h3>
+        <p class="text-sm text-gray-400">{t("footer.aboutText")}</p>
+      </div>
+    </div>
+
+    <div class="border-t border-gray-700 mt-10 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-gray-500">
+      <p>&copy; {currentYear} {t("footer.copyright")}</p>
+    </div>
+  </div>
+</footer>

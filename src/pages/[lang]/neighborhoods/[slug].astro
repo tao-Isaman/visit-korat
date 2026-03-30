@@ -1,0 +1,53 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Hero from "../../../components/Hero.astro";
+import { getCollection, render } from "astro:content";
+import { supportedLangs, useTranslations, getLocalizedPath } from "../../../i18n/utils";
+import { getSlug } from "../../../i18n/content";
+import type { Lang } from "../../../i18n/ui";
+
+export async function getStaticPaths() {
+  const neighborhoods = await getCollection("neighborhoods");
+  return neighborhoods.map((entry) => ({
+    params: { lang: entry.data.lang, slug: getSlug(entry.id) },
+    props: { entry },
+  }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Layout title={entry.data.title} description={entry.data.description}>
+  <Hero title={entry.data.title} image={entry.data.image} height="medium" />
+
+  <article class="py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="mb-8 text-sm text-gray-500">
+        <a href={getLocalizedPath(lang, "/")} class="hover:text-primary-600">{t("nav.home")}</a>
+        <span class="mx-2">/</span>
+        <a href={getLocalizedPath(lang, "/neighborhoods")} class="hover:text-primary-600">{t("nav.neighborhoods")}</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-900">{entry.data.title}</span>
+      </nav>
+      {entry.data.highlights.length > 0 && (
+        <div class="bg-primary-50 rounded-xl p-6 mb-8">
+          <h3 class="font-semibold text-primary-800 mb-3">Highlights</h3>
+          <ul class="space-y-2">
+            {entry.data.highlights.map((h: string) => (
+              <li class="flex items-start gap-2 text-primary-700">
+                <span class="material-symbols-outlined text-[16px] mt-0.5 text-primary-500">check</span>
+                {h}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <div class="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-primary-600">
+        <Content />
+      </div>
+    </div>
+  </article>
+</Layout>

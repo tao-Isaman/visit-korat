@@ -1,0 +1,59 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import HeroSplit from "../../../components/HeroSplit.astro";
+import { getCollection } from "astro:content";
+import { supportedLangs, useTranslations, getLocalizedPath } from "../../../i18n/utils";
+import { filterByLang, getSlug } from "../../../i18n/content";
+import type { Lang } from "../../../i18n/ui";
+
+export function getStaticPaths() {
+  return supportedLangs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+
+const neighborhoods = filterByLang(await getCollection("neighborhoods"), lang)
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout title={t("nav.neighborhoods")}>
+  <HeroSplit
+    title={t("nav.neighborhoods")}
+    subtitle={t("home.explore.subtitle")}
+    image="/images/neighborhoods/city-center.jpg"
+  />
+
+  <section class="py-12">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+      {neighborhoods.map((hood, i) => (
+        <a
+          href={getLocalizedPath(lang, `/neighborhoods/${getSlug(hood.id)}`)}
+          class="group grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
+        >
+          <div class:list={["aspect-[16/10] overflow-hidden rounded-[22px]", i % 2 === 1 && "md:order-2"]}>
+            <img src={hood.data.image} alt={hood.data.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          </div>
+          <div class={i % 2 === 1 ? "md:order-1" : ""}>
+            <h2 class="text-2xl font-bold text-gray-900 group-hover:text-primary-600 transition-colors">{hood.data.title}</h2>
+            <p class="text-gray-600 mt-3">{hood.data.description}</p>
+            {hood.data.highlights.length > 0 && (
+              <ul class="mt-4 space-y-2">
+                {hood.data.highlights.slice(0, 3).map((h: string) => (
+                  <li class="flex items-center gap-2 text-sm text-gray-700">
+                    <span class="w-1.5 h-1.5 rounded-full bg-primary-500 shrink-0" />
+                    {h}
+                  </li>
+                ))}
+              </ul>
+            )}
+            <span class="inline-flex items-center gap-1 mt-4 text-primary-600 font-semibold text-sm group-hover:gap-2 transition-all">
+              {t("general.exploreArea")}
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>

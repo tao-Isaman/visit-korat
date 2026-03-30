@@ -1,0 +1,85 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import HeroSplit from "../../../components/HeroSplit.astro";
+import SearchBar from "../../../components/SearchBar.astro";
+import PlaceCard from "../../../components/PlaceCard.astro";
+import { getCollection } from "astro:content";
+import { supportedLangs, useTranslations, getLocalizedPath } from "../../../i18n/utils";
+import { filterByLang, getSlug } from "../../../i18n/content";
+import type { Lang } from "../../../i18n/ui";
+
+export function getStaticPaths() {
+  return supportedLangs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+
+const attractions = filterByLang(await getCollection("attractions"), lang)
+  .sort((a, b) => a.data.order - b.data.order);
+const categories = [...new Set(attractions.map((a) => a.data.category))];
+---
+
+<Layout title={t("nav.attractions")}>
+  <HeroSplit
+    title={t("nav.attractions")}
+    titleAccent=""
+    subtitle={t("home.attractions.subtitle")}
+    image="/images/attractions/phimai.jpg"
+  />
+
+  <SearchBar categories={categories} basePath={getLocalizedPath(lang, "/attractions")} />
+
+  <section class="py-12">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="items-grid">
+        {attractions.map((attraction) => (
+          <div data-category={attraction.data.category} class="item-card">
+            <PlaceCard
+              title={attraction.data.title}
+              description={attraction.data.description}
+              image={attraction.data.image}
+              href={getLocalizedPath(lang, `/attractions/${getSlug(attraction.id)}`)}
+              category={attraction.data.category}
+              size="large"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const buttons = document.querySelectorAll(".filter-btn");
+  const items = document.querySelectorAll(".item-card");
+  const searchInput = document.getElementById("search-input") as HTMLInputElement;
+
+  let activeCategory = "all";
+
+  function applyFilters() {
+    const query = searchInput?.value.toLowerCase() || "";
+    items.forEach((item) => {
+      const cat = item.getAttribute("data-category");
+      const text = item.textContent?.toLowerCase() || "";
+      const matchesCat = activeCategory === "all" || cat === activeCategory;
+      const matchesSearch = !query || text.includes(query);
+      (item as HTMLElement).style.display = matchesCat && matchesSearch ? "" : "none";
+    });
+  }
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      buttons.forEach((b) => {
+        b.classList.remove("bg-primary-600", "text-white");
+        b.classList.add("bg-gray-100", "text-gray-600");
+      });
+      btn.classList.add("bg-primary-600", "text-white");
+      btn.classList.remove("bg-gray-100", "text-gray-600");
+      activeCategory = btn.getAttribute("data-category") || "all";
+      applyFilters();
+    });
+  });
+
+  searchInput?.addEventListener("input", applyFilters);
+</script>

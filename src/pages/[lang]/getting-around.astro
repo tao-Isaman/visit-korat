@@ -1,0 +1,121 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import HeroSplit from "../../components/HeroSplit.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import { supportedLangs, useTranslations } from "../../i18n/utils";
+import type { Lang } from "../../i18n/ui";
+
+export function getStaticPaths() {
+  return supportedLangs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+---
+
+<Layout title={t("nav.getting-around")}>
+  <HeroSplit
+    title={t("nav.getting-around")}
+    subtitle=""
+    image="/images/heroes/korat-skyline.jpg"
+  />
+
+  <!-- Tabs -->
+  <div class="border-b border-gray-200 bg-white sticky top-16 z-20">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex gap-8 overflow-x-auto hide-scrollbar">
+        <button class="tab-btn py-4 text-sm font-bold border-b-[3px] border-primary-600 text-primary-700" data-tab="to-korat">
+          Getting to Korat
+        </button>
+        <button class="tab-btn py-4 text-sm font-bold border-b-[3px] border-transparent text-gray-500 hover:text-primary-700" data-tab="around-korat">
+          Getting Around
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <section class="py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- To Korat Tab -->
+      <div id="tab-to-korat" class="tab-content space-y-6">
+        {[
+          { icon: "directions_bus", title: "By Bus from Bangkok", desc: "The most popular option. Buses depart frequently from Mo Chit (Northern) Bus Terminal.", items: ["Duration: 3-4 hours", "Cost: 200-350 THB (first class / VIP)", "Frequency: Every 30-60 minutes", "Companies: Nakhonchai Air (recommended), Transport Co."] },
+          { icon: "train", title: "By Train", desc: "A scenic and comfortable journey through the Thai countryside.", items: ["Duration: 4-5 hours", "Cost: 100-1,300 THB (3rd to 1st class)", "Departures from Krung Thep Aphiwat Station", "Book at thairailwayticket.com or at the station"] },
+          { icon: "directions_car", title: "By Car", desc: "The fastest and most flexible option, especially for Khao Yai.", items: ["Duration: 2.5-3 hours via Highway 2", "Toll: ~150 THB (motorway section)", "Car rental from ~800 THB/day", "Recommended for Khao Yai side trips"] },
+          { icon: "airport_shuttle", title: "By Minivan", desc: "Faster than buses but less comfortable. Depart when full.", items: ["Duration: 2.5-3 hours", "Cost: 200-250 THB", "From Victory Monument or Mo Chit area"] },
+        ].map((card) => (
+          <div class="bg-white rounded-[22px] border border-gray-100 p-6 shadow-sm">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-full bg-primary-50 flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary-700">{card.icon}</span>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900">{card.title}</h3>
+            </div>
+            <p class="text-gray-700 mb-3">{card.desc}</p>
+            <ul class="space-y-2 text-gray-600">
+              {card.items.map((item) => (
+                <li class="flex items-start gap-2 text-sm">
+                  <span class="material-symbols-outlined text-[14px] text-primary-500 mt-0.5">circle</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <!-- Around Korat Tab -->
+      <div id="tab-around-korat" class="tab-content hidden space-y-6">
+        {[
+          { icon: "local_shipping", title: "Songthaew (Shared Pickup Trucks)", desc: "Korat's main public transit. Color-coded routes run throughout the city.", items: ["Cost: 10-15 THB per ride", "Ring the bell to signal your stop", "Different colors = different routes"] },
+          { icon: "smartphone", title: "Grab / Ride-Hailing", desc: "Grab works in Korat. The most convenient option for tourists.", items: ["Download the Grab app before arriving", "Pay by cash or card", "Most rides within the city: 40-100 THB"] },
+          { icon: "two_wheeler", title: "Motorcycle Taxi & Tuk-tuk", desc: "Available at major intersections and markets.", items: ["Motorcycle taxi: 20-50 THB for short trips", "Tuk-tuk: Agree on price first (50-150 THB)", "Best for short distances within the city"] },
+          { icon: "directions_car", title: "Rental Car / Motorbike", desc: "Best for exploring outside the city — Khao Yai, Phimai.", items: ["Car rental: from 800 THB/day", "Motorbike rental: from 200 THB/day", "International driving permit recommended", "Drive on the left side in Thailand"] },
+        ].map((card) => (
+          <div class="bg-white rounded-[22px] border border-gray-100 p-6 shadow-sm">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-10 h-10 rounded-full bg-primary-50 flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary-700">{card.icon}</span>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900">{card.title}</h3>
+            </div>
+            <p class="text-gray-700 mb-3">{card.desc}</p>
+            <ul class="space-y-2 text-gray-600">
+              {card.items.map((item) => (
+                <li class="flex items-start gap-2 text-sm">
+                  <span class="material-symbols-outlined text-[14px] text-primary-500 mt-0.5">circle</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const tabBtns = document.querySelectorAll(".tab-btn");
+  const tabContents = document.querySelectorAll(".tab-content");
+
+  tabBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      tabBtns.forEach((b) => {
+        b.classList.remove("border-primary-600", "text-primary-700");
+        b.classList.add("border-transparent", "text-gray-500");
+      });
+      btn.classList.add("border-primary-600", "text-primary-700");
+      btn.classList.remove("border-transparent", "text-gray-500");
+
+      const tabId = btn.getAttribute("data-tab");
+      tabContents.forEach((tc) => {
+        if (tc.id === `tab-${tabId}`) {
+          tc.classList.remove("hidden");
+        } else {
+          tc.classList.add("hidden");
+        }
+      });
+    });
+  });
+</script>

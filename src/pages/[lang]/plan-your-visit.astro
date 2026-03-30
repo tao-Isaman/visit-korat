@@ -1,0 +1,187 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import HeroSplit from "../../components/HeroSplit.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import { supportedLangs, useTranslations } from "../../i18n/utils";
+import type { Lang } from "../../i18n/ui";
+
+export function getStaticPaths() {
+  return supportedLangs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+---
+
+<Layout title={t("nav.plan")}>
+  <HeroSplit
+    title={t("plan.hero.title")}
+    titleAccent={t("plan.hero.title2")}
+    subtitle={t("plan.hero.subtitle")}
+    image="/images/attractions/wat-sala-loi.jpg"
+  />
+
+  <!-- Tabs -->
+  <div class="border-b border-gray-200 bg-white sticky top-16 z-20">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex gap-8 overflow-x-auto hide-scrollbar justify-center">
+        <button class="tab-btn py-4 text-sm font-bold border-b-[3px] border-primary-600 text-primary-700" data-tab="info">
+          {t("plan.tab.info")}
+        </button>
+        <button class="tab-btn py-4 text-sm font-bold border-b-[3px] border-transparent text-gray-500 hover:text-primary-700" data-tab="routes">
+          {t("plan.tab.routes")}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <section class="py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Info Tab -->
+      <div id="tab-info" class="tab-content space-y-16">
+        <!-- Best Time -->
+        <div>
+          <SectionHeading title={t("plan.weather.title")} align="left" />
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-blue-50 rounded-[22px] p-6 border border-blue-100">
+              <h3 class="font-bold text-blue-900 mb-2">{t("season.cool")}</h3>
+              <p class="text-sm text-blue-800 font-semibold mb-2">{t("season.cool.months")}</p>
+              <p class="text-blue-700 text-sm">{t("season.cool.desc")}</p>
+            </div>
+            <div class="bg-orange-50 rounded-[22px] p-6 border border-orange-100">
+              <h3 class="font-bold text-orange-900 mb-2">{t("season.hot")}</h3>
+              <p class="text-sm text-orange-800 font-semibold mb-2">{t("season.hot.months")}</p>
+              <p class="text-orange-700 text-sm">{t("season.hot.desc")}</p>
+            </div>
+            <div class="bg-green-50 rounded-[22px] p-6 border border-green-100">
+              <h3 class="font-bold text-green-900 mb-2">{t("season.rainy")}</h3>
+              <p class="text-sm text-green-800 font-semibold mb-2">{t("season.rainy.months")}</p>
+              <p class="text-green-700 text-sm">{t("season.rainy.desc")}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Budget -->
+        <div>
+          <SectionHeading title={t("plan.budget.title")} align="left" />
+          <div class="bg-white rounded-[22px] border border-gray-200 overflow-hidden">
+            <table class="w-full text-left">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-sm font-semibold text-gray-900">Category</th>
+                  <th class="px-6 py-3 text-sm font-semibold text-gray-900">Budget</th>
+                  <th class="px-6 py-3 text-sm font-semibold text-gray-900">Mid-Range</th>
+                  <th class="px-6 py-3 text-sm font-semibold text-gray-900">Comfort</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-100">
+                <tr><td class="px-6 py-3 text-sm font-medium text-gray-900">Accommodation</td><td class="px-6 py-3 text-sm text-gray-600">300-500 THB</td><td class="px-6 py-3 text-sm text-gray-600">800-1,500 THB</td><td class="px-6 py-3 text-sm text-gray-600">2,000+ THB</td></tr>
+                <tr><td class="px-6 py-3 text-sm font-medium text-gray-900">Food (per day)</td><td class="px-6 py-3 text-sm text-gray-600">200-400 THB</td><td class="px-6 py-3 text-sm text-gray-600">500-800 THB</td><td class="px-6 py-3 text-sm text-gray-600">1,000+ THB</td></tr>
+                <tr><td class="px-6 py-3 text-sm font-medium text-gray-900">Transport (per day)</td><td class="px-6 py-3 text-sm text-gray-600">50-100 THB</td><td class="px-6 py-3 text-sm text-gray-600">200-500 THB</td><td class="px-6 py-3 text-sm text-gray-600">800+ THB</td></tr>
+                <tr class="bg-primary-50"><td class="px-6 py-3 text-sm font-bold text-primary-900">Daily Total</td><td class="px-6 py-3 text-sm font-bold text-primary-700">550-1,000 THB</td><td class="px-6 py-3 text-sm font-bold text-primary-700">1,500-2,800 THB</td><td class="px-6 py-3 text-sm font-bold text-primary-700">3,800+ THB</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-sm text-gray-500 mt-3">~35 THB = 1 USD</p>
+        </div>
+
+        <!-- Tips -->
+        <div>
+          <SectionHeading title={t("plan.tips.title")} align="left" />
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {[
+              { icon: "translate", title: "Language", desc: "English is less common here. Learn basic Thai phrases — locals appreciate the effort! Google Translate's camera feature helps with menus." },
+              { icon: "payments", title: "Money", desc: "Carry cash — many vendors only accept cash. ATMs are widely available (150-220 THB fee per withdrawal)." },
+              { icon: "temple_buddhist", title: "Temple Etiquette", desc: "Cover shoulders and knees. Remove shoes before entering. Don't point feet toward Buddha images." },
+              { icon: "wifi", title: "Connectivity", desc: "Buy a local SIM at any 7-Eleven (AIS, TrueMove, DTAC). Tourist SIMs from 300 THB for a week with unlimited data." },
+              { icon: "health_and_safety", title: "Health & Safety", desc: "Korat is very safe. Stay hydrated. Drink bottled water. Korat has excellent hospitals." },
+              { icon: "backpack", title: "What to Pack", desc: "Light breathable clothing, modest outfit for temples, sunscreen, rain jacket (Jun-Oct), insect repellent for Khao Yai." },
+            ].map((tip) => (
+              <div class="bg-white rounded-[22px] border border-gray-100 p-6 shadow-sm">
+                <h3 class="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-primary-600">{tip.icon}</span>
+                  {tip.title}
+                </h3>
+                <p class="text-gray-600 text-sm">{tip.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Thai Phrases -->
+        <div>
+          <SectionHeading title={t("plan.phrases.title")} align="left" />
+          <div class="bg-amber-50 rounded-[22px] border border-amber-100 p-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                { thai: "สวัสดี", phonetic: "Sa-wat-dee", english: "Hello / Goodbye" },
+                { thai: "ขอบคุณ", phonetic: "Khob-khun", english: "Thank you" },
+                { thai: "อร่อย", phonetic: "A-roi", english: "Delicious!" },
+                { thai: "เท่าไหร่", phonetic: "Thao-rai", english: "How much?" },
+                { thai: "ไม่เผ็ด", phonetic: "Mai-phet", english: "Not spicy" },
+                { thai: "ห้องน้ำอยู่ไหน", phonetic: "Hong-nam yoo nai", english: "Where is the toilet?" },
+                { thai: "ช่วยด้วย", phonetic: "Chuay duay", english: "Help!" },
+                { thai: "โคราช", phonetic: "Koh-rat", english: "Korat" },
+              ].map((phrase) => (
+                <div class="flex items-center gap-3 p-3 bg-white rounded-xl">
+                  <div class="text-right shrink-0 w-28">
+                    <span class="text-lg font-medium text-amber-900">{phrase.thai}</span>
+                  </div>
+                  <div>
+                    <span class="text-sm font-semibold text-gray-900">{phrase.phonetic}</span>
+                    <span class="text-sm text-gray-500 ml-2">— {phrase.english}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p class="text-xs text-amber-700 mt-4">Add "krub" (male) or "ka" (female) at the end for politeness.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Routes Tab -->
+      <div id="tab-routes" class="tab-content hidden space-y-8">
+        <div class="bg-white rounded-[22px] border border-gray-100 p-6 shadow-sm">
+          <h3 class="text-xl font-bold text-gray-900 mb-4">3-Day Korat Classic</h3>
+          <div class="space-y-4">
+            {[
+              { day: "Day 1", title: "City Center & Culture", items: ["Thao Suranari Monument & Chumphon Gate", "Wat Sala Loi (boat-shaped temple)", "Pad Mee Korat for lunch", "Save One Night Market for dinner"] },
+              { day: "Day 2", title: "Phimai Day Trip", items: ["Bus to Phimai (1.5 hrs)", "Phimai Historical Park", "Phimai National Museum", "Sai Ngam banyan tree", "Return to Korat for dinner"] },
+              { day: "Day 3", title: "Khao Yai Nature", items: ["Drive to Khao Yai National Park", "Haew Suwat Waterfall hike", "Wildlife spotting at Mo Singto", "PB Valley Winery (optional)", "Return to Bangkok or Korat"] },
+            ].map((route) => (
+              <div class="flex gap-4">
+                <div class="shrink-0 w-16 h-16 rounded-full bg-primary-50 flex flex-col items-center justify-center">
+                  <span class="text-xs text-primary-500 font-semibold">{route.day}</span>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-900">{route.title}</h4>
+                  <ul class="mt-1 space-y-1">
+                    {route.items.map((item) => (
+                      <li class="text-sm text-gray-600 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[12px] text-primary-400">arrow_right</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const tabBtns = document.querySelectorAll(".tab-btn");
+  const tabContents = document.querySelectorAll(".tab-content");
+  tabBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      tabBtns.forEach((b) => { b.classList.remove("border-primary-600", "text-primary-700"); b.classList.add("border-transparent", "text-gray-500"); });
+      btn.classList.add("border-primary-600", "text-primary-700"); btn.classList.remove("border-transparent", "text-gray-500");
+      const tabId = btn.getAttribute("data-tab");
+      tabContents.forEach((tc) => { tc.id === `tab-${tabId}` ? tc.classList.remove("hidden") : tc.classList.add("hidden"); });
+    });
+  });
+</script>

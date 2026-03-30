@@ -1,0 +1,43 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  image: string;
+  height?: "full" | "large" | "medium";
+  overlay?: boolean;
+}
+
+const { title, subtitle, image, height = "large", overlay = true } = Astro.props;
+
+const heightClasses = {
+  full: "min-h-[calc(100vh-5rem)]",
+  large: "min-h-[70vh]",
+  medium: "min-h-[50vh]",
+};
+---
+
+<section
+  class:list={[
+    "relative flex items-center justify-center text-white",
+    heightClasses[height],
+  ]}
+>
+  <div
+    class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+    style={`background-image: url('${image}')`}
+  >
+    {overlay && <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20" />}
+  </div>
+
+  <div class="relative z-10 text-center px-4 max-w-4xl mx-auto">
+    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-4 drop-shadow-lg leading-tight">
+      {title}
+    </h1>
+    {subtitle && (
+      <p class="text-lg sm:text-xl md:text-2xl text-white/90 max-w-2xl mx-auto drop-shadow">
+        {subtitle}
+      </p>
+    )}
+    <slot />
+  </div>
+</section>

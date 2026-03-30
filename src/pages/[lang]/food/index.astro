@@ -1,0 +1,77 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import HeroSplit from "../../../components/HeroSplit.astro";
+import SearchBar from "../../../components/SearchBar.astro";
+import PlaceCard from "../../../components/PlaceCard.astro";
+import { getCollection } from "astro:content";
+import { supportedLangs, useTranslations, getLocalizedPath } from "../../../i18n/utils";
+import { filterByLang, getSlug } from "../../../i18n/content";
+import type { Lang } from "../../../i18n/ui";
+
+export function getStaticPaths() {
+  return supportedLangs.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const t = useTranslations(lang);
+
+const food = filterByLang(await getCollection("food"), lang)
+  .sort((a, b) => a.data.order - b.data.order);
+const categories = [...new Set(food.map((f) => f.data.category))];
+---
+
+<Layout title={t("nav.food")}>
+  <HeroSplit
+    title={t("nav.food")}
+    subtitle={t("home.food.subtitle")}
+    image="/images/food/som-tam.jpg"
+  />
+
+  <SearchBar categories={categories} basePath={getLocalizedPath(lang, "/food")} />
+
+  <section class="py-12">
+    <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="items-grid">
+        {food.map((item) => (
+          <div data-category={item.data.category} class="item-card">
+            <PlaceCard
+              title={item.data.title}
+              description={item.data.description}
+              image={item.data.image}
+              href={getLocalizedPath(lang, `/food/${getSlug(item.id)}`)}
+              category={item.data.category}
+              badge={item.data.priceRange}
+              size="large"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const buttons = document.querySelectorAll(".filter-btn");
+  const items = document.querySelectorAll(".item-card");
+  const searchInput = document.getElementById("search-input") as HTMLInputElement;
+  let activeCategory = "all";
+  function applyFilters() {
+    const query = searchInput?.value.toLowerCase() || "";
+    items.forEach((item) => {
+      const cat = item.getAttribute("data-category");
+      const text = item.textContent?.toLowerCase() || "";
+      const matchesCat = activeCategory === "all" || cat === activeCategory;
+      const matchesSearch = !query || text.includes(query);
+      (item as HTMLElement).style.display = matchesCat && matchesSearch ? "" : "none";
+    });
+  }
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      buttons.forEach((b) => { b.classList.remove("bg-primary-600", "text-white"); b.classList.add("bg-gray-100", "text-gray-600"); });
+      btn.classList.add("bg-primary-600", "text-white"); btn.classList.remove("bg-gray-100", "text-gray-600");
+      activeCategory = btn.getAttribute("data-category") || "all";
+      applyFilters();
+    });
+  });
+  searchInput?.addEventListener("input", applyFilters);
+</script>

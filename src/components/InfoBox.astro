@@ -1,0 +1,19 @@
+---
+interface Props {
+  items: { label: string; value: string; icon?: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="bg-primary-50 rounded-xl p-6 space-y-3">
+  {items.map((item) => (
+    <div class="flex items-start gap-3">
+      {item.icon && <span class="material-symbols-outlined text-primary-600 text-[20px] shrink-0 mt-0.5">{item.icon}</span>}
+      <div>
+        <span class="text-sm font-semibold text-primary-800">{item.label}</span>
+        <p class="text-sm text-primary-700">{item.value}</p>
+      </div>
+    </div>
+  ))}
+</div>
