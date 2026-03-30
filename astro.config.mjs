@@ -9,7 +9,7 @@ export default defineConfig({
   integrations: [
     sitemap({
       i18n: {
-        defaultLocale: 'en',
+        defaultLocale: 'th',
         locales: {
           en: 'en',
           th: 'th',
@@ -19,13 +19,13 @@ export default defineConfig({
     }),
   ],
   redirects: {
-    '/attractions': '/en/attractions',
-    '/food': '/en/food',
-    '/neighborhoods': '/en/neighborhoods',
-    '/festivals': '/en/festivals',
-    '/getting-around': '/en/getting-around',
-    '/plan-your-visit': '/en/plan-your-visit',
-    '/blog': '/en/blog',
+    '/attractions': '/th/attractions',
+    '/food': '/th/food',
+    '/neighborhoods': '/th/neighborhoods',
+    '/festivals': '/th/festivals',
+    '/getting-around': '/th/getting-around',
+    '/plan-your-visit': '/th/plan-your-visit',
+    '/blog': '/th/blog',
   },
   vite: {
     plugins: [tailwindcss()]

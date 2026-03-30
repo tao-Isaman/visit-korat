@@ -6,7 +6,7 @@ export const languages = {
 
 export type Lang = keyof typeof languages;
 
-export const defaultLang: Lang = "en";
+export const defaultLang: Lang = "th";
 
 export const ui = {
   en: {
